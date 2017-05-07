@@ -9,17 +9,17 @@ DeleteGroup(const ::std::string &, const ::Ice::Current &) {
 
 }
 
-::Chat::Groups GroupServerManagerI::
+Groups GroupServerManagerI::
 ListGroups(const ::Ice::Current &) {
     return Chat::Groups();
 }
 
-::Chat::GroupServerPrx GroupServerManagerI::
+GroupServerPrx GroupServerManagerI::
 CreateGroup(const ::std::string &, const ::Ice::Current &) {
     return Chat::GroupServerPrx();
 }
 
-::Chat::GroupServerPrx GroupServerManagerI::
+GroupServerPrx GroupServerManagerI::
 getGroupServerByName(const ::std::string &, const ::Ice::Current &) {
     return Chat::GroupServerPrx();
 }
