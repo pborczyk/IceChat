@@ -3,5 +3,5 @@ project(IceChat)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp GroupServer.h GroupServer.cpp GroupServerManager.h GroupServerManager.cpp)
 add_executable(IceChat ${SOURCE_FILES})
