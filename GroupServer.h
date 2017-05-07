@@ -1,7 +1,8 @@
 #include "chat.h"
 
 using namespace Chat;
-
+#ifndef ICECHAT_GROUP_SERVER_H
+#define ICECHAT_GROUP_SERVER_H
 class GroupServerI : public virtual Chat::GroupServer {
 
     virtual void join(const UserPrx&, const ::Ice::Current& = ::Ice::Current());
@@ -19,3 +20,5 @@ private:
     Users users;
 
 };
+
+#endif //ICECHAT_GROUP_SERVER_H
