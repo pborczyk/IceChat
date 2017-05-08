@@ -12,7 +12,7 @@ exception UserAlreadyRegistered{};
 exception UserDoesNotExist{};
 
 sequence<GroupServer> Groups;
-sequence<User> Users; 
+sequence<User*> Users;
 
 interface ChatServer {
 	void LogIn(User* callback) throws NameAlreadyExists;

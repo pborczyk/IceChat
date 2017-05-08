@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.7)
-project(IceChat)
+project(IceHello)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.cpp GroupServer.h GroupServer.cpp GroupServerManager.h GroupServerManager.cpp)
-add_executable(IceChat ${SOURCE_FILES})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+
+find_package(Ice 3.4.0 REQUIRED Ice IceUtil Glacier2)
+include_directories (${Ice_INCLUDE_DIRS})
+
+set(SERVER_FILES GroupServer.h GroupServer.cpp GroupServerManager.h GroupServerManager.cpp User.h chat.cpp chat.h main.cpp)
+add_executable(server ${SERVER_FILES})
+
+target_link_libraries (server ${Ice_LIBRARIES} pthread)

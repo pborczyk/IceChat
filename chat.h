@@ -219,7 +219,7 @@ protected:
 
 typedef ::std::vector< ::Chat::GroupServerPtr> Groups;
 
-typedef ::std::vector< ::Chat::UserPtr> Users;
+typedef ::std::vector< ::Chat::UserPrx> Users;
 
 }
 

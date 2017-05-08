@@ -1708,7 +1708,6 @@ IceProxy::Chat::GroupServer::UserList(const ::Ice::Context* __ctx)
     ::Chat::Users __ret;
     ::IceInternal::BasicStream* __is = __og.startReadParams();
     __is->read(__ret);
-    __is->readPendingObjects();
     __og.endReadParams();
     return __ret;
 }
@@ -1792,7 +1791,6 @@ IceProxy::Chat::GroupServer::end_UserList(const ::Ice::AsyncResultPtr& __result)
     }
     ::IceInternal::BasicStream* __is = __result->__startReadParams();
     __is->read(__ret);
-    __is->readPendingObjects();
     __result->__endReadParams();
     return __ret;
 }
@@ -3066,7 +3064,6 @@ Chat::GroupServer::___UserList(::IceInternal::Incoming& __inS, const ::Ice::Curr
     ::Chat::Users __ret = UserList(__current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
-    __os->writePendingObjects();
     __inS.__endWriteParams(true);
     return ::Ice::DispatchOK;
 }
