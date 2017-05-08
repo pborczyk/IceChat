@@ -11,7 +11,7 @@ exception ServerDoesNotExist{};
 exception UserAlreadyRegistered{};
 exception UserDoesNotExist{};
 
-sequence<GroupServer> Groups;
+sequence<GroupServer*> Groups;
 sequence<User*> Users;
 
 interface ChatServer {
