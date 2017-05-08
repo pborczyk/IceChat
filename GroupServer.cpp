@@ -2,8 +2,8 @@
 #include "Ice/Ice.h"
 
 ::std::string GroupServerI::
-Name(const ::Ice::Current &) {
-    return std::__cxx11::string();
+Name(const ::Ice::Current & current) {
+    return current.id.name;
 }
 
 Users GroupServerI::
@@ -14,7 +14,12 @@ UserList(const ::Ice::Current &) {
 void GroupServerI::
 SendMessage(const ::std::string & message, const UserPrx & sender, const ::Ice::Current & current) {
     GroupServerPrx groupServerPrx = GroupServerPrx::uncheckedCast(current.adapter->createProxy(current.id));
+    std::vector<UserPrx>::iterator it;
 
+    for (it = users.begin();it < users.end(); it++) {
+        UserPrx prx = *it;
+        prx ->receiveText(message, sender, groupServerPrx);
+    }
 
 }
 
