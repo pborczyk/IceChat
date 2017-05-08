@@ -18,7 +18,7 @@ CreateGroup(const ::std::string & name, const ::Ice::Current & current) {
     }
 
     GroupServerPtr newGroupServer = new GroupServerI();
-    GroupServerPrx newServerProxy = current.adapter -> add(newGroupServer, id);
+    GroupServerPrx newServerProxy = newServerProxy.uncheckedCast(current.adapter -> add(newGroupServer, id));
     groups.push_back(newServerProxy);
 }
 
@@ -51,5 +51,6 @@ GroupServerPrx GroupServerManagerI::
 getGroupServerByName(const ::std::string & name, const ::Ice::Current & current) {
     Ice::Identity id;
     id.name = name;
-    return current.adapter -> createProxy(id);
+    GroupServerPrx groupServerPrx = groupServerPrx.uncheckedCast(current.adapter -> createProxy(id));
+    return groupServerPrx;
 }
