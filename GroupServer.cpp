@@ -16,6 +16,10 @@ SendMessage(const ::std::string & message, const UserPrx & sender, const ::Ice::
     GroupServerPrx groupServerPrx = GroupServerPrx::uncheckedCast(current.adapter->createProxy(current.id));
     std::vector<UserPrx>::iterator it;
 
+    if(!(std::find(users.begin(), users.end(), sender) != users.end())) {
+        throw new UserDoesNotExist();
+    }
+
     for (it = users.begin();it < users.end(); it++) {
         UserPrx prx = *it;
         prx ->receiveText(message, sender, groupServerPrx);
@@ -25,10 +29,20 @@ SendMessage(const ::std::string & message, const UserPrx & sender, const ::Ice::
 
 void GroupServerI::
 Leave(const UserPrx & userPrx, const ::Ice::Current &) {
+
+    if(!(std::find(users.begin(), users.end(), userPrx) != users.end())) {
+        throw new UserDoesNotExist();
+    }
+
     users.erase( std::remove( users.begin(), users.end(), userPrx ), users.end() );
 }
 
 void GroupServerI::
 join(const UserPrx & userPrx, const ::Ice::Current &) {
+
+    if((std::find(users.begin(), users.end(), userPrx) != users.end())) {
+        throw new UserAlreadyRegistered();
+    }
+
     users.push_back(userPrx);
 }
