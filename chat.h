@@ -217,7 +217,7 @@ protected:
     using ::Ice::UserException::__readImpl;
 };
 
-typedef ::std::vector< ::Chat::GroupServerPtr> Groups;
+typedef ::std::vector< ::Chat::GroupServerPrx> Groups;
 
 typedef ::std::vector< ::Chat::UserPrx> Users;
 

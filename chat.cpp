@@ -621,7 +621,6 @@ IceProxy::Chat::ChatServer::GroupList(const ::Ice::Context* __ctx)
     ::Chat::Groups __ret;
     ::IceInternal::BasicStream* __is = __og.startReadParams();
     __is->read(__ret);
-    __is->readPendingObjects();
     __og.endReadParams();
     return __ret;
 }
@@ -705,7 +704,6 @@ IceProxy::Chat::ChatServer::end_GroupList(const ::Ice::AsyncResultPtr& __result)
     }
     ::IceInternal::BasicStream* __is = __result->__startReadParams();
     __is->read(__ret);
-    __is->readPendingObjects();
     __result->__endReadParams();
     return __ret;
 }
@@ -2080,7 +2078,6 @@ IceProxy::Chat::GroupServerManager::ListGroups(const ::Ice::Context* __ctx)
     ::Chat::Groups __ret;
     ::IceInternal::BasicStream* __is = __og.startReadParams();
     __is->read(__ret);
-    __is->readPendingObjects();
     __og.endReadParams();
     return __ret;
 }
@@ -2164,7 +2161,6 @@ IceProxy::Chat::GroupServerManager::end_ListGroups(const ::Ice::AsyncResultPtr& 
     }
     ::IceInternal::BasicStream* __is = __result->__startReadParams();
     __is->read(__ret);
-    __is->readPendingObjects();
     __result->__endReadParams();
     return __ret;
 }
@@ -2729,7 +2725,6 @@ Chat::ChatServer::___GroupList(::IceInternal::Incoming& __inS, const ::Ice::Curr
     ::Chat::Groups __ret = GroupList(__current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
-    __os->writePendingObjects();
     __inS.__endWriteParams(true);
     return ::Ice::DispatchOK;
 }
@@ -3246,7 +3241,6 @@ Chat::GroupServerManager::___ListGroups(::IceInternal::Incoming& __inS, const ::
     ::Chat::Groups __ret = ListGroups(__current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
-    __os->writePendingObjects();
     __inS.__endWriteParams(true);
     return ::Ice::DispatchOK;
 }
