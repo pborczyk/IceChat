@@ -6,6 +6,8 @@ using namespace Chat;
 
 
 class GroupServerManagerI : public virtual GroupServerManager {
+
+public:
     virtual GroupServerPrx CreateGroup(const ::std::string&, const ::Ice::Current& = ::Ice::Current());
 
     virtual Groups ListGroups(const ::Ice::Current& = ::Ice::Current());
@@ -14,6 +16,8 @@ class GroupServerManagerI : public virtual GroupServerManager {
 
     virtual GroupServerPrx getGroupServerByName(const ::std::string&, const ::Ice::Current& = ::Ice::Current());
 
+private:
+    Groups groups;
 
 };
 
