@@ -13,6 +13,7 @@ void ChatServerI::LogIn(const UserPrx & userPrx, const ::Ice::Current & current)
     users.push_back(userPrx);
 }
 
+//TO DO Optimize
 UserPrx ChatServerI::getUserByName(const ::std::string & name, const ::Ice::Current & current) {
     std::vector<UserPrx>::iterator it;
     for (it = users.begin();it < users.end(); it++) {
@@ -65,9 +66,10 @@ void ChatServerI::DeleteGroup(const ::std::string & name, const ::Ice::Current &
 }
 
 void ChatServerI::registerServer(const GroupServerManagerPrx & groupServerManagerPrx, const ::Ice::Current & current) {
-    if (current.adapter -> findByProxy(groupServerManagerPrx) == NULL) {
+    if (current.adapter -> findByProxy(groupServerManagerPrx) != NULL) {
         throw new ServerAlreadyRegistered();
     }
+    
     GroupServerManagerLoad managerLoad;
     managerLoad.groupCount = 0;
     groupServersManagers[groupServerManagerPrx] = managerLoad;

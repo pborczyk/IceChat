@@ -46,3 +46,7 @@ join(const UserPrx & userPrx, const ::Ice::Current &) {
 
     users.push_back(userPrx);
 }
+
+GroupServerI::GroupServerI() {
+
+}

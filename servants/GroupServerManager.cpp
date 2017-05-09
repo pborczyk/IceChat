@@ -2,9 +2,9 @@
 // Created by howorang on 07.05.17.
 //
 
-#include "GroupServerManager.h"
+#include "servants/GroupServer.h"
+#include "servants/GroupServerManager.h"
 #include "Ice/Ice.h"
-#include "GroupServer.h"
 
 
 GroupServerPrx GroupServerManagerI::
@@ -20,6 +20,8 @@ CreateGroup(const ::std::string & name, const ::Ice::Current & current) {
     GroupServerPtr newGroupServer = new GroupServerI();
     GroupServerPrx newServerProxy = newServerProxy.uncheckedCast(current.adapter -> add(newGroupServer, id));
     groups.push_back(newServerProxy);
+
+    return newServerProxy;
 }
 
 void GroupServerManagerI::

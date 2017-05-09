@@ -3,7 +3,11 @@
 using namespace Chat;
 #ifndef ICECHAT_GROUP_SERVER_H
 #define ICECHAT_GROUP_SERVER_H
+
 class GroupServerI : public virtual Chat::GroupServer {
+public:
+
+    GroupServerI();
 
     virtual void join(const UserPrx&, const ::Ice::Current& = ::Ice::Current());
 
