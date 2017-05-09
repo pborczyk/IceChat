@@ -24,8 +24,14 @@ public:
     }
 
     virtual int run(int, char *[]) {
+        std::cout << "Podaj port: ";
+        std::string port;
+        std::cin >> port;
+        std::string proxyDef = "tcp -p ";
+        proxyDef.append(port);
+        
         ChatServerPrx chatServerPrx = chatServerPrx.uncheckedCast(communicator()->propertyToProxy("ChatServer.Proxy"));
-        Ice::ObjectAdapterPtr objectAdapter = communicator()->createObjectAdapterWithEndpoints("Client", "tcp -p 9998");
+        Ice::ObjectAdapterPtr objectAdapter = communicator()->createObjectAdapterWithEndpoints("Client", proxyDef);
         std::string username = prompt_for_input("Podaj nick: ");
         UserPtr newUser = new UserI(username);
         objectAdapter->add(newUser, Ice::stringToIdentity(username));

@@ -20,7 +20,9 @@ CreateGroup(const ::std::string & name, const ::Ice::Current & current) {
     GroupServerPtr newGroupServer = new GroupServerI(name);
     GroupServerPrx newServerProxy = newServerProxy.uncheckedCast(current.adapter -> add(newGroupServer, id));
     groups.push_back(newServerProxy);
-
+    
+    std::cout << "Dodano grupe " << name << std::endl;
+    
     return newServerProxy;
 }
 

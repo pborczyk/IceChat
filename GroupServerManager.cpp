@@ -7,8 +7,15 @@ using namespace Chat;
 class IceChatClient : virtual public Ice::Application {
 public:
     virtual int run(int, char*[]) {
+
+        std::cout << "Podaj port: ";
+        std::string port;
+        std::cin >> port;
+        std::string proxyDef = "tcp -p ";
+        proxyDef.append(port);
+        
         ChatServerPrx chatServerPrx = chatServerPrx.uncheckedCast(communicator() -> propertyToProxy("ChatServer.Proxy"));
-        Ice::ObjectAdapterPtr objectAdapter = communicator() -> createObjectAdapterWithEndpoints("GroupServerManagerAdapter", "tcp -p 9999");
+        Ice::ObjectAdapterPtr objectAdapter = communicator() -> createObjectAdapterWithEndpoints("GroupServerManagerAdapter", proxyDef);
         GroupServerManagerPtr groupServerManager = new GroupServerManagerI();
 
         GroupServerManagerPrx groupServerManagerPrx =
