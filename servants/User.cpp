@@ -16,8 +16,9 @@ UserI::UserI(std::string name) {
 void UserI::receiveText(const ::std::string & message, const ::Chat::UserPrx & sender, const ::Chat::GroupServerPrx & groupServerPrx,
                         const ::Ice::Current & current) {
     std::string senderUserName = sender -> getName();
-    std::string groupName = groupServerPrx -> Name();
-    std::cout << groupName << " " << senderUserName << " " << message << std::endl;
+    std::string groupName = groupServerPrx -> ice_getIdentity().name;
+    std::cout << "Wiadomosc" << std::endl;
+    std::cout <<  groupName << " " << senderUserName << " " << message << std::endl;
 }
 
 void UserI::receivePrivateText(const ::std::string & message, const ::Chat::UserPrx & sender,

@@ -3,7 +3,8 @@
 
 ::std::string GroupServerI::
 Name(const ::Ice::Current & current) {
-    return current.id.name;
+    std::cout << "test";
+    return name;
 }
 
 Users GroupServerI::
@@ -22,8 +23,11 @@ SendMessage(const ::std::string & message, const UserPrx & sender, const ::Ice::
 
     for (it = users.begin();it < users.end(); it++) {
         UserPrx prx = *it;
+        std::cout << "GONNA CRASH";
         prx ->receiveText(message, sender, groupServerPrx);
     }
+    
+    std::cout << "TEST";
 
 }
 
@@ -38,15 +42,15 @@ Leave(const UserPrx & userPrx, const ::Ice::Current &) {
 }
 
 void GroupServerI::
-join(const UserPrx & userPrx, const ::Ice::Current &) {
+join(const UserPrx & userPrx, const ::Ice::Current & current) {
 
     if((std::find(users.begin(), users.end(), userPrx) != users.end())) {
         throw new UserAlreadyRegistered();
     }
-
+    
     users.push_back(userPrx);
 }
 
-GroupServerI::GroupServerI() {
-
+GroupServerI::GroupServerI(std::string name) {
+    this -> name = name;
 }

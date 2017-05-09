@@ -13,8 +13,8 @@ public:
 
         GroupServerManagerPrx groupServerManagerPrx =
                 groupServerManagerPrx.uncheckedCast(objectAdapter ->addWithUUID(groupServerManager));
-        chatServerPrx -> registerServer(groupServerManagerPrx);
         objectAdapter -> activate();
+        chatServerPrx -> registerServer(groupServerManagerPrx);
         communicator() -> waitForShutdown();
         printf("shutdown");
         return 0;

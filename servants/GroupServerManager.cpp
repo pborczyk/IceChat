@@ -17,7 +17,7 @@ CreateGroup(const ::std::string & name, const ::Ice::Current & current) {
         throw new NameAlreadyExists();
     }
 
-    GroupServerPtr newGroupServer = new GroupServerI();
+    GroupServerPtr newGroupServer = new GroupServerI(name);
     GroupServerPrx newServerProxy = newServerProxy.uncheckedCast(current.adapter -> add(newGroupServer, id));
     groups.push_back(newServerProxy);
 

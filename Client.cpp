@@ -5,6 +5,7 @@
 using namespace Chat;
 
 void group_menu();
+
 std::string prompt_for_input(std::string message);
 
 class IceChatClient : virtual public Ice::Application {
@@ -15,22 +16,23 @@ public:
     void display_all_groups(Groups groups) {
         std::vector<GroupServerPrx>::iterator it;
         int i = 0;
-        for (it = groups.begin();it < groups.end(); it++) {
+        for (it = groups.begin(); it < groups.end(); it++) {
             GroupServerPrx groupServerPrx = groupServerPrx.checkedCast(*it);
-            std::cout << i + 1 << ":" << groupServerPrx -> Name() << std::endl;
+            std::cout << i + 1 << ":" << groupServerPrx->Name() << std::endl;
             i++;
         }
     }
 
-    virtual int run(int, char*[]) {
+    virtual int run(int, char *[]) {
         ChatServerPrx chatServerPrx = chatServerPrx.uncheckedCast(communicator()->propertyToProxy("ChatServer.Proxy"));
-        Ice::ObjectAdapterPtr objectAdapter = communicator()->createObjectAdapterWithEndpoints("Client","tcp -p 9998");
+        Ice::ObjectAdapterPtr objectAdapter = communicator()->createObjectAdapterWithEndpoints("Client", "tcp -p 9998");
         std::string username = prompt_for_input("Podaj nick: ");
         UserPtr newUser = new UserI(username);
         objectAdapter->add(newUser, Ice::stringToIdentity(username));
         objectAdapter->activate();
         Ice::ObjectPrx userPrx_raw = objectAdapter->createProxy(Ice::stringToIdentity(username));
         UserPrx userPrx = userPrx.uncheckedCast(userPrx_raw);
+        UserPrx reciever;
 
         chatServerPrx->LogIn(userPrx);
         std::cout << "logged in" << std::endl;
@@ -56,14 +58,29 @@ public:
                     chosenGroup->join(userPrx);
                     break;
                 }
+
                 case 3: {
                     std::string message = prompt_for_input("Wiadomosc: ");
                     chosenGroup->SendMessage(message, userPrx);
+                    std::cout << "Wysłano";
                     break;
                 }
+
+                case 4:
+                    std::string reciverName = prompt_for_input("Podaj nick: ");
+                    try {
+                        reciever = reciever.uncheckedCast(chatServerPrx->getUserByName(reciverName));
+                        std::string privateMessage = prompt_for_input("Podaj wiadomosc: ");
+                        reciever->receivePrivateText(privateMessage, userPrx);
+                        std::cout << "Wyslano" << std::endl;
+                    } catch (const IceUtil::NullHandleException &) {
+                        std::cout << "Nie ma takiego uzytkownika" << std::endl;
+                    }
+
+                    break;
             }
         }
-        communicator() -> waitForShutdown();
+        communicator()->waitForShutdown();
 
         printf("shutdown");
         return 0;
@@ -71,9 +88,10 @@ public:
 };
 
 void group_menu() {
-    std::cout << "Dodaj grupę: 1" << std::endl;
-    std::cout << "Wejdz do grupy: 2" << std::endl;
-    std::cout << "Napisz cos na grupie" << std::endl;
+    std::cout << "1.Dodaj grupę" << std::endl;
+    std::cout << "2.Wejdz do grupy" << std::endl;
+    std::cout << "3.Napisz cos na grupie" << std::endl;
+    std::cout << "4.Wyslij wiadomosc prywatna" << std::endl;
 }
 
 std::string prompt_for_input(std::string message) {
@@ -84,11 +102,7 @@ std::string prompt_for_input(std::string message) {
 }
 
 int
-main(int argc, char* argv[])
-{
-#ifdef ICE_STATIC_LIBS
-    Ice::registerIceSSL();
-#endif
+main(int argc, char *argv[]) {
     IceChatClient app;
     return app.main(argc, argv, "ice.config");
 }

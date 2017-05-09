@@ -7,7 +7,7 @@ using namespace Chat;
 class GroupServerI : public virtual Chat::GroupServer {
 public:
 
-    GroupServerI();
+    GroupServerI(std::string name);
 
     virtual void join(const UserPrx&, const ::Ice::Current& = ::Ice::Current());
 
@@ -21,6 +21,7 @@ public:
 
 private:
 
+    std::string name;
     Users users;
 
 };
