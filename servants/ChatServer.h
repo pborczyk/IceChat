@@ -35,6 +35,7 @@ private:
 
     Groups groups;
     Users users;
+    std::vector<std::string> userNames;
     std::map<GroupServerManagerPrx, GroupServerManagerLoad> groupServersManagers;
 
     GroupServerManagerPrx getLeastLoadedServerManager();

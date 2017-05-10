@@ -18,7 +18,8 @@ SendMessage(const ::std::string & message, const UserPrx & sender, const ::Ice::
     std::vector<UserPrx>::iterator it;
 
     if(!(std::find(users.begin(), users.end(), sender) != users.end())) {
-        throw new UserDoesNotExist();
+        UserDoesNotExist e;
+        throw e;
     }
 
     for (it = users.begin();it < users.end(); it++) {
@@ -35,7 +36,8 @@ void GroupServerI::
 Leave(const UserPrx & userPrx, const ::Ice::Current &) {
 
     if(!(std::find(users.begin(), users.end(), userPrx) != users.end())) {
-        throw new UserDoesNotExist();
+        UserDoesNotExist e;
+        throw e;
     }
 
     users.erase( std::remove( users.begin(), users.end(), userPrx ), users.end() );
@@ -45,7 +47,8 @@ void GroupServerI::
 join(const UserPrx & userPrx, const ::Ice::Current & current) {
 
     if((std::find(users.begin(), users.end(), userPrx) != users.end())) {
-        throw new UserAlreadyRegistered();
+        UserAlreadyRegistered e;
+        throw e;
     }
     
     users.push_back(userPrx);

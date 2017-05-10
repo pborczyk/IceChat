@@ -14,7 +14,8 @@ CreateGroup(const ::std::string & name, const ::Ice::Current & current) {
     id.name = name;
 
     if(current.adapter ->find(id) != NULL) {
-        throw new NameAlreadyExists();
+        NameAlreadyExists e;
+        throw e;
     }
 
     GroupServerPtr newGroupServer = new GroupServerI(name);
@@ -32,7 +33,8 @@ DeleteGroup(const ::std::string & name, const ::Ice::Current & current) {
     id.name = name;
 
     if(current.adapter ->find(id) == NULL) {
-        throw new NameDoesNotExist();
+        NameDoesNotExist e;
+        throw e;
     }
     current.adapter -> remove(id);
 

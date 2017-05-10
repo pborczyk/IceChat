@@ -11,7 +11,7 @@ std::string prompt_for_input(std::string message);
 class IceChatClient : virtual public Ice::Application {
 public:
 
-    GroupServerPrx chosenGroup;
+    GroupServerPrx chosenGroup = NULL;
 
     void display_all_groups(Groups groups) {
         std::vector<GroupServerPrx>::iterator it;
@@ -29,7 +29,7 @@ public:
         std::cin >> port;
         std::string proxyDef = "tcp -p ";
         proxyDef.append(port);
-        
+
         ChatServerPrx chatServerPrx = chatServerPrx.uncheckedCast(communicator()->propertyToProxy("ChatServer.Proxy"));
         Ice::ObjectAdapterPtr objectAdapter = communicator()->createObjectAdapterWithEndpoints("Client", proxyDef);
         std::string username = prompt_for_input("Podaj nick: ");
@@ -60,6 +60,11 @@ public:
                     std::cout << "Wybierz grupę";
                     int choice;
                     std::cin >> choice;
+                    //LEAVING OLD GROUP
+                    if (chosenGroup != NULL) {
+                        chosenGroup->Leave(userPrx);
+                    }
+
                     chosenGroup = groups[--choice];
                     chosenGroup->join(userPrx);
                     break;
@@ -72,7 +77,7 @@ public:
                     break;
                 }
 
-                case 4:
+                case 4: {
                     std::string reciverName = prompt_for_input("Podaj nick: ");
                     try {
                         reciever = reciever.uncheckedCast(chatServerPrx->getUserByName(reciverName));
@@ -84,6 +89,14 @@ public:
                     }
 
                     break;
+                }
+                case 5: {
+                    if (chosenGroup != NULL) {
+                        chosenGroup->Leave(userPrx);
+                    }
+                    communicator()->shutdown();
+                    break;
+                }
             }
         }
         communicator()->waitForShutdown();
@@ -98,6 +111,7 @@ void group_menu() {
     std::cout << "2.Wejdz do grupy" << std::endl;
     std::cout << "3.Napisz cos na grupie" << std::endl;
     std::cout << "4.Wyslij wiadomosc prywatna" << std::endl;
+    std::cout << "5.Wyjdz" << std::endl;
 }
 
 std::string prompt_for_input(std::string message) {

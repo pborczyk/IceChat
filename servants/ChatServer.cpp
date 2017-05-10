@@ -7,9 +7,11 @@
 
 
 void ChatServerI::LogIn(const UserPrx & userPrx, const ::Ice::Current & current) {
-    if(current.adapter -> findByProxy(userPrx) != NULL) {
-        throw new UserAlreadyRegistered();
+    if((std::find(userNames.begin(), userNames.end(), userPrx -> ice_getIdentity().name) != userNames.end())) {
+        UserAlreadyRegistered e;
+        throw e;
     }
+    userNames.push_back(userPrx -> ice_getIdentity().name);
     users.push_back(userPrx);
 }
 
@@ -37,12 +39,14 @@ GroupServerPrx ChatServerI::getGroupServerByName(const ::std::string & name, con
             return groupServerPrx;
         }
     }
-    throw new NameDoesNotExist();
+    NameDoesNotExist e;
+    throw e;
 }
 
 void ChatServerI::CreateGroup(const ::std::string & name, const ::Ice::Current &) {
     if (groupExists(name)) {
-        throw new NameAlreadyExists();
+        NameAlreadyExists e;
+        throw e;
     }
 
     GroupServerManagerPrx groupServerManagerPrx = getLeastLoadedServerManager();
@@ -55,7 +59,8 @@ void ChatServerI::CreateGroup(const ::std::string & name, const ::Ice::Current &
 void ChatServerI::DeleteGroup(const ::std::string & name, const ::Ice::Current & current) {
 
     if (!groupExists(name)){
-        throw new NameDoesNotExist();
+        NameDoesNotExist e;
+        throw e;
     }
 
     GroupServerManagerPrx managerPrx = getHostingServerManager(name);
@@ -66,10 +71,15 @@ void ChatServerI::DeleteGroup(const ::std::string & name, const ::Ice::Current &
 }
 
 void ChatServerI::registerServer(const GroupServerManagerPrx & groupServerManagerPrx, const ::Ice::Current & current) {
-    if (current.adapter -> findByProxy(groupServerManagerPrx) != NULL) {
-        throw new ServerAlreadyRegistered();
+    if (groupServersManagers.find(groupServerManagerPrx) != groupServersManagers.end()) {
+        ServerAlreadyRegistered e;
+        throw e;
     }
-    
+
+    current.adapter ->createProxy(groupServerManagerPrx -> ice_getIdentity());
+
+
+
     GroupServerManagerLoad managerLoad;
     managerLoad.groupCount = 0;
     groupServersManagers[groupServerManagerPrx] = managerLoad;
@@ -77,10 +87,10 @@ void ChatServerI::registerServer(const GroupServerManagerPrx & groupServerManage
 
 
 void ChatServerI::unregisterServer(const GroupServerManagerPrx & groupServerManagerPrx, const ::Ice::Current & current) {
-    if (current.adapter -> findByProxy(groupServerManagerPrx) == NULL) {
-        throw new ServerDoesNotExist();
+    if (groupServersManagers.find(groupServerManagerPrx) == groupServersManagers.end()) {
+        ServerDoesNotExist e;
+        throw e;
     }
-    current.adapter -> remove(groupServerManagerPrx -> ice_getIdentity());
     groupServersManagers.erase(groupServerManagerPrx);
 }
 
